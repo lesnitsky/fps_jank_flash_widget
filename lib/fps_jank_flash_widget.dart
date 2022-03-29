@@ -38,6 +38,35 @@ class FPSJankFlash extends StatefulWidget {
     this.flashColor = const Color(0x00ff0000),
   }) : super(key: key);
 
+  /// Returns a [Stack] that includes a [child] and renders [FPSJankFlash]
+  /// widget on top of it.
+  static Widget overlay({
+    BuildContext? context,
+    required Widget child,
+
+    /// Flash color. Defaults to red
+    Color? color,
+  }) {
+    final overlay = Stack(
+      children: [
+        child,
+        FPSJankFlash(flashColor: color),
+      ],
+    );
+
+    if (context != null) {
+      final directionality = Directionality.maybeOf(context);
+      if (directionality != null) {
+        return overlay;
+      }
+    }
+
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: overlay,
+    );
+  }
+
   @override
   State<FPSJankFlash> createState() => _FPSJankFlashState();
 }

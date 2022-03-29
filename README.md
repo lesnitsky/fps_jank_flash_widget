@@ -18,14 +18,31 @@ flutter packages get
 ```dart
 import 'package:fps_jank_flash_widget/fps_jank_flash_widget.dart';
 
+void main() {
+  const frameBudget = Duration(milliseconds: 17); // 60 fps
+  FPSJankFlash.frameBudget = frameBudget;
+
+  runApp(FPSJankFlash.overlay(child: const MyApp()));
+}
+```
+
+`FPSJankFlash` could be used directly:
+
+```dart
+import 'package:fps_jank_flash_widget/fps_jank_flash_widget.dart';
+
 class SomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        YourListView(),
+        Column(
+         children: [
+            /// ... your widgets,
+          ],
+        ),
         const FPSJankFlash(),
-      ],
+      ]
     );
   }
 }
@@ -56,7 +73,7 @@ void main() {
   final budgetMs = 1000 ~/ refreshRate;
   FPSJankFlash.frameBudget = Duration(milliseconds: budgetMs);
 
-  runApp(YourApp());
+  runApp(FPSJankFlash.overlay(child: const MyApp()));
 }
 ```
 

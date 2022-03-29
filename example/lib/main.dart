@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:fps_jank_flash_widget/fps_jank_flash_widget.dart';
 
 void main() {
-  // 60 fps
-  FPSJankFlash.frameBudget = const Duration(milliseconds: 17);
-  runApp(const MyApp());
+  const frameBudget = Duration(milliseconds: 17); // 60 fps
+  FPSJankFlash.frameBudget = frameBudget;
+
+  runApp(FPSJankFlash.overlay(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -55,18 +56,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          ListView.builder(
-            controller: controller,
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              final item = list[index];
-              return ListTile(title: Text(item));
-            },
-          ),
-          const FPSJankFlash(),
-        ],
+      body: ListView.builder(
+        controller: controller,
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          final item = list[index];
+          return ListTile(title: Text(item));
+        },
       ),
     );
   }
