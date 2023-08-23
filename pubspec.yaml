@@ -1,10 +1,10 @@
 name: fps_jank_flash_widget
 description: A flutter widget that flashes when flutter fails to render a frame in a certain timeframe
-version: 1.1.0+2
+version: 1.1.0+3
 repository: https://github.com/lesnitsky/fps_jank_flash_widget
 
 environment:
-  sdk: ">=2.16.1 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:

@@ -8,7 +8,7 @@ class JankObserver extends ChangeNotifier {
   factory JankObserver() => _instance;
 
   JankObserver._() {
-    SchedulerBinding.instance!.addPersistentFrameCallback(_onFrame);
+    SchedulerBinding.instance.addPersistentFrameCallback(_onFrame);
   }
 
   Duration? _prevDuration;
@@ -22,6 +22,10 @@ class JankObserver extends ChangeNotifier {
       }
     }
     _prevDuration = frameDuration;
+
+    if (FPSJankFlash.scheduleForcedFrames) {
+      SchedulerBinding.instance.scheduleForcedFrame();
+    }
   }
 }
 
@@ -30,13 +34,17 @@ class FPSJankFlash extends StatefulWidget {
   /// If the frame takes longer than this, you will see a flash.
   static Duration frameBudget = const Duration(milliseconds: 17);
 
+  /// If true, [SchedulerBinding.instance.scheduleForcedFrame] will be called
+  /// after each frame.
+  static bool scheduleForcedFrames = true;
+
   /// The color of the flash.
   final Color? flashColor;
 
   const FPSJankFlash({
-    Key? key,
+    super.key,
     this.flashColor = const Color(0x00ff0000),
-  }) : super(key: key);
+  });
 
   /// Returns a [Stack] that includes a [child] and renders [FPSJankFlash]
   /// widget on top of it.
@@ -89,7 +97,7 @@ class _FPSJankFlashState extends State<FPSJankFlash> {
   @override
   Widget build(BuildContext context) {
     if (flash) {
-      SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
         setState(() {
           flash = false;
         });
